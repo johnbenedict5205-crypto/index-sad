@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Order</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      flex: 2;
+    }
+
+    label {
+      display: block;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      background: #fff;
+      width: 220px;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    label:hover {
+      border-color: #4caf50;
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    select {
+      margin-top: 8px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .option-buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .option-buttons button {
+      padding: 5px 10px;
+      font-size: 13px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option-buttons button:hover {
+      background: #45a049;
+    }
+
+    button[type="submit"] {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 15px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #summary {
+      margin-top: 40px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      display: none;
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .logout-btn {
+      margin-top: 20px;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .logout-btn:hover {
+      background: #218838;
+    }
+
+    /* --- PAYMENT SECTION (Left Side) --- */
+    .payment-method {
+      background: white;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      width: 230px;
+      text-align: left;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .payment-method h2 {
+      text-align: center;
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      background: #0077ff;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .payment-option:hover {
+      background: #005fcc;
+    }
+
+    .payment-option input[type="radio"] {
+      margin-right: 10px;
+      accent-color: white;
+      transform: scale(1.2);
+    }
+
+    .payment-option img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border-radius: 5px;
+      background: white;
+      padding: 2px;
+    }
+
+    /* make selected payment more visible */
+    .payment-option.selected {
+      box-shadow: 0 4px 12px rgba(0,123,255,0.25);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 800px) {
+      .container { flex-direction: column; align-items: center; padding: 20px; }
+      .payment-method, .menu { width: 100%; max-width: 700px; }
+      label { width: calc(50% - 24px); }
+      @media (max-width: 480px) {
+        label { width: 100%; }
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Please Choose Your Order</h1>
+  <div class="container">
+    <!-- Payment Method Left Side -->
+    <div class="payment-method">
+      <h2>Payment Method</h2>
+      <label class="payment-option" id="cashOption">
+        <input type="radio" name="payment" value="Cash"> 💵 Cash
+      </label>
+
+      <label class="payment-option" id="gcashOption">
+        <input type="radio" name="payment" value="GCash">
+        <img src="c:\Users\john benedict\Downloads\gcashlogo.jpg" alt="GCash">
+        GCash
+      </label>
+    </div>
+
+    <!-- Main Menu -->
+    <form id="orderForm" class="menu">
+
+      <!-- Pancit Guisado -->
+      <label>
+        <img src="c:\\Users\\john benedict\\Downloads\\pancit guisado.jpg" alt="Pancit Guisado">
+        <br>
+        <input type="checkbox" name="order" value="Pancit Guisado" data-price="80"> Pancit Guisado - ₱80
+        <br>
+        Quantity:
+        <select name="qty_pancit">
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3">3</option><option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <div class="option-buttons">
+          <button type="button" onclick="setOption('Pancit Guisado', 'Dine In')">Dine In</button>
+          <button type="button" onclick="setOption('Pancit Guisado', 'Take Out')">Take Out</button>
+        </div>
+      </label>
+
+      <!-- Special Mami -->
+      <label>
+        <img src="c:\\Users\\john benedict\\Downloads\\mami.jpg" alt="Special Mami">
+        <br>
+        <input type="checkbox" name="order" value="Special Mami" data-price="60"> Special Mami - ₱60
+        <br>
+        Quantity:
+        <select name="qty_mami">
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3">3</option><option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <div class="option-buttons">
+          <button type="button" onclick="setOption('Special Mami', 'Dine In')">Dine In</button>
+          <button type="button" onclick="setOption('Special Mami', 'Take Out')">Take Out</button>
+        </div>
+      </label>
+
+      <!-- Tokwat Baboy -->
+      <label>
+        <img src="c:\\Users\\john benedict\\Downloads\\tokwat baboy.jpg" alt="Tokwat Baboy">
+        <br>
+        <input type="checkbox" name="order" value="Tokwat Baboy" data-price="50"> Tokwat Baboy - ₱50
+        <br>
+        Quantity:
+        <select name="qty_tokwat">
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3">3</option><option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <div class="option-buttons">
+          <button type="button" onclick="setOption('Tokwat Baboy', 'Dine In')">Dine In</button>
+          <button type="button" onclick="setOption('Tokwat Baboy', 'Take Out')">Take Out</button>
+        </div>
+      </label>
+
+      <button type="submit">Place Order</button>
+    </form>
+  </div>
+
+  <div id="summary">
+    <h2>Order Summary</h2>
+    <ul id="orderList"></ul>
+    <h3 id="orderTotal"></h3>
+    <a href="C:\\Users\\john benedict\\OneDrive\\Desktop\\BENEDICT.html\\logout.html" class="logout-btn">Next → Logout</a>
+  </div>
+
+  <script>
+    let orderOptions = {
+      "Pancit Guisado": "",
+      "Special Mami": "",
+      "Tokwat Baboy": ""
+    };
+
+    function setOption(item, option) {
+      orderOptions[item] = option;
+      // optional: remove alert for cleaner UX
+      // alert(item + " set to " + option);
+    }
+
+    // Make payment buttons visually selectable
+    document.getElementById('cashOption').addEventListener('click', function() {
+      document.getElementById('cashOption').classList.add('selected');
+      document.getElementById('gcashOption').classList.remove('selected');
+      this.querySelector('input[type="radio"]').checked = true;
+    });
+    document.getElementById('gcashOption').addEventListener('click', function() {
+      document.getElementById('gcashOption').classList.add('selected');
+      document.getElementById('cashOption').classList.remove('selected');
+      this.querySelector('input[type="radio"]').checked = true;
+    });
+
+    const form = document.getElementById("orderForm");
+    const summary = document.getElementById("summary");
+    const orderList = document.getElementById("orderList");
+    const orderTotal = document.getElementById("orderTotal");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      orderList.innerHTML = "";
+      let hasOrder = false;
+      let total = 0;
+      const payment = document.querySelector('input[name="payment"]:checked') || document.querySelector('input[name="payment"]:checked') ;
+      // because payment radios live outside form, we check by name on document
+      const selectedPayment = document.querySelector('input[name="payment"]:checked') || document.querySelector('.payment-option input:checked');
+
+      // find payment by checking the two radio inputs manually
+      const cashRadio = document.querySelector('input[name="payment"][value="Cash"]');
+      const gcashRadio = document.querySelector('input[name="payment"][value="GCash"]');
+      let paymentValue = null;
+      if (cashRadio && cashRadio.checked) paymentValue = 'Cash';
+      if (gcashRadio && gcashRadio.checked) paymentValue = 'GCash';
+
+      if (!paymentValue) {
+        alert("Please select a payment method.");
+        return;
+      }
+
+      const items = [
+        {name: "Pancit Guisado", checkbox: form.querySelector('input[value="Pancit Guisado"]'), qty: form.querySelector('select[name="qty_pancit"]'), price: 80},
+        {name: "Special Mami", checkbox: form.querySelector('input[value="Special Mami"]'), qty: form.querySelector('select[name="qty_mami"]'), price: 60},
+        {name: "Tokwat Baboy", checkbox: form.querySelector('input[value="Tokwat Baboy"]'), qty: form.querySelector('select[name="qty_tokwat"]'), price: 50}
+      ];
+
+      items.forEach(item => {
+        if (item.checkbox && item.checkbox.checked) {
+          hasOrder = true;
+          let qty = parseInt(item.qty.value) || 1;
+          let cost = item.price * qty;
+          total += cost;
+          let optionText = orderOptions[item.name] ? " (" + orderOptions[item.name] + ")" : "";
+          const li = document.createElement("li");
+          li.textContent = `${item.name} x ${qty} ${optionText} = ₱${cost}`;
+          orderList.appendChild(li);
+        }
+      });
+
+      if (hasOrder) {
+        summary.style.display = "block";
+        orderTotal.textContent = "Total: ₱" + total + " | Payment: " + paymentValue;
+      } else {
+        alert("Please select at least one item.");
+        summary.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
